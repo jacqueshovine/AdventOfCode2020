@@ -16,6 +16,7 @@ def splitPolicy (policy):
 
   return splitted
 
+# Part 1
 def isOldPolicyValid (policy, password):
 
   splitted_policy = splitPolicy(policy)
@@ -27,6 +28,7 @@ def isOldPolicyValid (policy, password):
   
   return letter_count >= splitted_policy['lowest'] and letter_count <= splitted_policy['highest']
 
+# Part 2
 def isCurrentPolicyValid (policy, password):
 
   splitted_policy = splitPolicy(policy)
