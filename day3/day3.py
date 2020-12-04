@@ -15,9 +15,9 @@ def countTrees(right, down):
   row_counter = right
 
   for i in range(0, grid_length - down, down):
-    #If row_counter exceeds 30, we need to set it back to loop over the next row.
-    if row_counter > 30:
-      row_counter -= 31
+    #If row_counter exceeds row_length - 1 (starts from 0 to row_length - 1), we need to set it back to loop over the next row.
+    if row_counter > row_length - 1:
+      row_counter -= row_length
     #Checking if there is a tree at the next row. Adds +3 to the row_counter for the next row check.
     if grid.iloc[i + down]['rows'][row_counter] == '#':
       tree_count += 1
