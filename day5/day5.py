@@ -1,4 +1,5 @@
 import math
+import numpy as np
 
 #Contents of the input file
 file = open("input.txt")
@@ -29,7 +30,7 @@ def findSeatCol(boarding_pass: str):
   colMin = 0
   colMax = 7
 
-  #Characters 8 to 10 are used to find the sead row
+  #Characters 8 to 10 are used to find the sead col
   for i in range(7,9):
 
     if boarding_pass[i] == 'L':
@@ -42,12 +43,31 @@ def findSeatCol(boarding_pass: str):
   else:
     return colMax
 
+def findSeatId(seatIds: list):
+
+  #First we need to sort seatIds
+  sortedIds = np.sort(seatIds)
+
+  #Storing the smallest ID in a variable
+  seatId = sortedIds[0]
+
+  for i in range(0, len(sortedIds)):
+    #If the difference between current ID and last ID is more than 1, we found the missing seat
+    if sortedIds[i] - seatId > 1:
+      return sortedIds[i] - 1
+    else:
+      seatId = sortedIds[i]
+
+  return -1
 
 maxSeatId = 0
+seatIds = []
 
 for i in range(0, len(boarding_passes)):
   seatId = 8 * findSeatRow(boarding_passes[i]) + findSeatCol(boarding_passes[i])
+  seatIds.append(seatId)
   if maxSeatId < seatId:
     maxSeatId = seatId
 
-print(maxSeatId)
+print("The highest seat ID is : " + str(maxSeatId))
+print("My seat ID is : " + str(findSeatId(seatIds)))
