@@ -13,31 +13,71 @@ def processArgument(argument):
     return argument_value * -1
 
 
-#Instructions that have already been executed once
-executed = []
-accumulator = 0
-buffer = ""
-count = 0
+def processBootCode(instructions: list):
 
-while True:
+  #Instructions that have already been executed once
+  executed = []
+  accumulator = 0
+  buffer = ""
+  count = 0
 
-  if len(executed) != len(set(executed)):
-    print("Last accumulator value : " + str(buffer))
-    break
+  while True:
 
-  operation = instructions_per_line[count].split(" ")[0]
-  argument = instructions_per_line[count].split(" ")[1]
+    #We added "end" at the last line of the input file to know when it terminates
+    if instructions[count] == "end":
+      success = True
+      break
 
-  #Storing accumulator value before any changes
-  buffer = accumulator
+    if len(executed) != len(set(executed)):
+      print("Last accumulator value : " + str(buffer))
+      success = False
+      break
 
-  if operation == "nop":
-    count += 1
-    continue
-  elif operation == "acc":
-    count += 1
-    accumulator += processArgument(argument)
-  elif operation == "jmp":
-    count += processArgument(argument)
+    operation = instructions[count].split(" ")[0]
+    argument = instructions[count].split(" ")[1]
 
-  executed.append(count)
+    #Storing accumulator value before any changes
+    buffer = accumulator
+
+    if operation == "nop":
+      count += 1
+      continue
+    elif operation == "acc":
+      count += 1
+      accumulator += processArgument(argument)
+    elif operation == "jmp":
+      count += processArgument(argument)
+
+    executed.append(count)
+
+  if success:
+    return accumulator
+  else:
+    return -1
+
+# !!! BRUTE FORCE !!! #
+instructions_per_line_copy = instructions_per_line
+
+for i in range(0, len(instructions_per_line_copy)):
+  if instructions_per_line_copy[i].split(" ")[0] == "jmp":
+    instructions_per_line_copy[i] = ("nop " + instructions_per_line_copy[i].split(" ")[1])
+    test = processBootCode(instructions_per_line_copy)
+    if test != -1:
+      print("Accumulator value after program terminates: " + str(test))
+      break
+    else:
+      #Reseting variable if the test failed
+      instructions_per_line_copy[i] = ("jmp " + instructions_per_line_copy[i].split(" ")[1])
+      continue
+  elif instructions_per_line_copy[i].split(" ")[0] == "nop":
+    instructions_per_line_copy[i] = ("jmp " + instructions_per_line_copy[i].split(" ")[1])
+    test = processBootCode(instructions_per_line_copy)
+    if test != -1:
+      print("Accumulator value after program terminates: " + str(test))
+      break
+    else:
+      #Reseting variable if the test failed
+      instructions_per_line_copy[i] = ("nop " + instructions_per_line_copy[i].split(" ")[1])
+      continue
+
+print("Terminated")
