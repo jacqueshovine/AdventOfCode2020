@@ -14,7 +14,7 @@ def findNumber(numbers: list):
   valid = False
  
   #For each number in the file (starting after the preamble)
-  for i in range(25, len(numbers)):
+  for _ in range(25, len(numbers)):
     #We try adding up each number with each other number (excluding itself)
     for j in range(low_index, high_index):
       for k in range(low_index, high_index):
@@ -45,7 +45,7 @@ def findWeakness(numbers: list):
   contiguous_range = 2
 
   #Increases the amount of numbers (range) that need to be added up each time we loop over the numbers list
-  for i in range(0, len(numbers)):
+  for _ in range(0, len(numbers)):
 
     low_index = 0
 
